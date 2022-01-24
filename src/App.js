@@ -1,23 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import Cell from './Cell'
 
-function App() {
+const App = () => {
+  const grid = new Array(10).fill(0).map(row => new Array(10).fill(0))
+  const renderGrid = (grid) => {
+    return grid.map( (row) =>
+      <tr>{ row.map((cell) => <Cell />) }</tr>
+    )
+  }
+  console.log(renderGrid(grid))
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <table style={{ border: '1px solid black' }}>
+        <tbody>
+          {renderGrid(grid)}
+        </tbody>
+      </table>
+      <button>Simulate!</button>
     </div>
   );
 }
