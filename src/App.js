@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Cell from './Cell'
 
@@ -6,9 +6,22 @@ const App = () => {
   const grid = new Array(10).fill(0).map(row => new Array(10).fill(0))
   const renderGrid = (grid) => {
     return grid.map( (row) =>
-      <tr>{ row.map((cell) => <Cell />) }</tr>
+      <tr>{ row.map(() => <Cell />) }</tr>
     )
   }
+
+  const [simulate, setSimulate] = useState(false)
+  const [triggerCount, setTriggerCount] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if(simulate) {
+        setTriggerCount(seconds => seconds + 1);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [simulate]);
+
   console.log(renderGrid(grid))
   return (
     <div className="App">
@@ -17,7 +30,10 @@ const App = () => {
           {renderGrid(grid)}
         </tbody>
       </table>
-      <button>Simulate!</button>
+      <button onClick={() => setSimulate(!simulate)}>Simulate!</button>
+      <div>
+        Have been triggered {triggerCount} times
+      </div>
     </div>
   );
 }
