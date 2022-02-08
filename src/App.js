@@ -5,8 +5,8 @@ import Cell from './Cell'
 const App = () => {
   const grid = new Array(10).fill(0).map(row => new Array(10).fill(0))
   const renderGrid = (grid) => {
-    return grid.map( (row) =>
-      <tr>{ row.map(() => <Cell />) }</tr>
+    return grid.map((row, rowIndex) =>
+      <tr key={rowIndex}>{row.map((cell, cellIndex) => <Cell key={cellIndex} position={[rowIndex, cellIndex]} grid={grid} />)}</tr>
     )
   }
 
@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(simulate) {
+      if (simulate) {
         setTriggerCount(seconds => seconds + 1);
       }
     }, 1000);
