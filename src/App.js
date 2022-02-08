@@ -22,7 +22,7 @@ const App = () => {
     return () => clearInterval(interval);
   }, [simulate]);
 
-  console.log(renderGrid(grid))
+  // console.log(renderGrid(grid))
   return (
     <div className="App">
       <table style={{ border: '1px solid black' }}>
