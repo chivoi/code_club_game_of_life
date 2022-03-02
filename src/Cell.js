@@ -36,17 +36,14 @@ const Cell = ({ position, grid, setGrid, isSimulating }) => {
 
   useEffect(() => {
     return () => {
-      if(isSimulating && position[0] !== 0 && position[0] !== grid.length - 1) {
-        console.log(position)
-        console.log(grid)
+      if (isSimulating && position[0] !== 0 && position[0] !== grid.length - 1) {
         const numLiveNeighbours = getNeighbours(position, grid).filter((cell) => cell === 1).length
-        console.log(numLiveNeighbours)
-        if(alive) {
-          if(!(numLiveNeighbours === 2 || numLiveNeighbours === 3)){
+        if (alive) {
+          if (!(numLiveNeighbours === 2 || numLiveNeighbours === 3)) {
             die()
           }
         } else {
-          if(numLiveNeighbours === 3) {
+          if (numLiveNeighbours === 3) {
             live()
           }
         }
@@ -62,8 +59,8 @@ const Cell = ({ position, grid, setGrid, isSimulating }) => {
 
   return <td
     onClick={() => {
-      if(!isSimulating) {
-        if(alive) {
+      if (!isSimulating) {
+        if (alive) {
           die()
         } else {
           live()

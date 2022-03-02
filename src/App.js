@@ -24,9 +24,18 @@ const App = () => {
     return () => clearInterval(interval);
   }, [simulate]);
 
-  // console.log(renderGrid(grid))
-  const randomize = () => {
-    const newGrid = new Array(40).fill(Math.round(Math.random())).map(row => new Array(40).fill(Math.round(Math.random())))
+  const randomize = (grid) => {
+    const randomCase = Math.round(Math.random());
+    let newGrid;
+
+    if (randomCase === 0) {
+      // This fills in the whole rows
+      newGrid = new Array(40).fill(Math.round(Math.random())).map(row => new Array(40).fill(Math.round(Math.random())))
+    } else {
+      // This fills in random cell by cell
+      newGrid = grid.map(row => row.map(item => item = Math.round(Math.random())));
+    }
+
     setGrid(newGrid)
   }
   return (
@@ -37,7 +46,7 @@ const App = () => {
         </tbody>
       </table>
       <button onClick={() => setSimulate(!simulate)}>Simulate!</button>
-      <button onClick={() => randomize()}>Randomize!</button>
+      <button onClick={() => randomize(grid)}>Randomize!</button>
       <div>
         Have been triggered {triggerCount} times
       </div>
