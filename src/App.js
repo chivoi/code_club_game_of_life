@@ -34,7 +34,7 @@ const App = () => {
           {renderGrid()}
         </tbody>
       </table>
-      <button onClick={() => setSimulate(!simulate)}>Simulate!</button>
+      <button onClick={() => setSimulate(!simulate)}>{simulate ? "Stop" : "Simulate!"}</button>
       <button onClick={() => setGrid(randomize(grid))}>Randomize!</button>
       <button onClick={() => setGrid(clearGrid())}>Clear!</button>
       <div>
