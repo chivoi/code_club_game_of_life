@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Cell from './Cell'
+import { randomize } from './utils/randomize';
 
 const App = () => {
   const [grid, setGrid] = useState(new Array(40).fill(0).map(row => new Array(40).fill(0)))
@@ -24,20 +25,7 @@ const App = () => {
     return () => clearInterval(interval);
   }, [simulate]);
 
-  const randomize = (grid) => {
-    const randomCase = Math.round(Math.random());
-    let newGrid;
 
-    if (randomCase === 0) {
-      // This fills in the whole rows
-      newGrid = new Array(40).fill(Math.round(Math.random())).map(row => new Array(40).fill(Math.round(Math.random())))
-    } else {
-      // This fills in random cell by cell
-      newGrid = grid.map(row => row.map(item => item = Math.round(Math.random())));
-    }
-
-    setGrid(newGrid)
-  }
   return (
     <div className="App">
       <table style={{ border: '1px solid black' }}>
@@ -46,7 +34,7 @@ const App = () => {
         </tbody>
       </table>
       <button onClick={() => setSimulate(!simulate)}>Simulate!</button>
-      <button onClick={() => randomize(grid)}>Randomize!</button>
+      <button onClick={() => setGrid(randomize(grid))}>Randomize!</button>
       <div>
         Have been triggered {triggerCount} times
       </div>
