@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Cell from './Cell'
+import { clearGrid } from './utils/clearGrid';
 import { randomize } from './utils/randomize';
 
 const App = () => {
-  const [grid, setGrid] = useState(new Array(40).fill(0).map(row => new Array(40).fill(0)))
-  const [simulate, setSimulate] = useState(false)
+  const [grid, setGrid] = useState(clearGrid());
+  const [simulate, setSimulate] = useState(false);
   const [triggerCount, setTriggerCount] = useState(0);
 
   const renderGrid = useCallback(() => {
@@ -35,6 +36,7 @@ const App = () => {
       </table>
       <button onClick={() => setSimulate(!simulate)}>Simulate!</button>
       <button onClick={() => setGrid(randomize(grid))}>Randomize!</button>
+      <button onClick={() => setGrid(clearGrid())}>Clear!</button>
       <div>
         Have been triggered {triggerCount} times
       </div>
