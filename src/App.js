@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import './App.css';
-import Cell from './Cell'
-import { clearGrid } from './utils/clearGrid';
-import { randomize } from './utils/randomize';
+import Cell from './components/Cell'
+import { clearGrid, randomize } from './utils/helpers';
 
 const App = () => {
   const [grid, setGrid] = useState(clearGrid());
