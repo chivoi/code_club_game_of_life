@@ -1,29 +1,32 @@
 import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Cell from './components/Cell'
-import { clearGrid, randomize } from './utils/helpers';
+import { resetGrid, randomize, calculateNextState, ROW_SIZE, COL_SIZE } from './utils/helpers';
 
 const App = () => {
-  const [grid, setGrid] = useState(clearGrid());
   const [simulate, setSimulate] = useState(false);
   const [triggerCount, setTriggerCount] = useState(0);
+  const [allCellData, setAllCellData] = useState(resetGrid())
 
   const renderGrid = useCallback(() => {
     console.log("Rendering Grid")
-    return grid.map((row, rowIndex) =>
-      <tr key={rowIndex}>{row.map((cell, cellIndex) => <Cell key={cellIndex} position={[rowIndex, cellIndex]} grid={grid} setGrid={setGrid} isSimulating={simulate} />)}</tr>
-    )
-  }, [simulate, grid])
+    return [...Array(ROW_SIZE).keys()].map((rowIndex) => <tr key={rowIndex}>
+      {
+        [...Array(COL_SIZE).keys()].map((colIndex) => <Cell key={colIndex} position={[rowIndex, colIndex]} allCellData={allCellData} setAllCellData={setAllCellData} isSimulating={simulate} />)
+      }
+    </tr>)
+  }, [allCellData, simulate])
 
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (simulate) {
+        calculateNextState(allCellData, setAllCellData)
         setTriggerCount(seconds => seconds + 1);
       }
-    }, 1000);
+    }, 50);
     return () => clearInterval(interval);
-  }, [simulate]);
+  }, [allCellData, simulate]);
 
 
   return (
@@ -34,8 +37,8 @@ const App = () => {
         </tbody>
       </table>
       <button onClick={() => setSimulate(!simulate)}>{simulate ? "Stop" : "Simulate!"}</button>
-      <button onClick={() => setGrid(randomize(grid))}>Randomize!</button>
-      <button onClick={() => setGrid(clearGrid())}>Clear!</button>
+      <button onClick={() => setAllCellData(randomize(allCellData))}>Randomize!</button>
+      <button onClick={() => setAllCellData(resetGrid())}>Clear!</button>
       <div>
         Have been triggered {triggerCount} times
       </div>
