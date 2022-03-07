@@ -84,22 +84,21 @@ export const randomize = (allCellData) => {
 export const calculateNextState = (allCellData, setAllCellData) => {
     // Only compute for live cells
     const liveCellCoords = Object.entries(allCellData).filter(([_key, val]) => val.isAlive);
-    const cellsToEvaluate = [...liveCellCoords.map(([_coord,cellData]) => [[[cellData.row, cellData.col],cellData],...cellData.neighbours.map((neighbourCoord) => [neighbourCoord, allCellData[neighbourCoord]])])].flat()
+    const cellsToEvaluate = [...liveCellCoords.map(([coord,cellData]) => [[[cellData.row, cellData.col],cellData],...cellData.neighbours.map((neighbourCoord) => [neighbourCoord, allCellData[neighbourCoord]])])].flat()
 
     for (const [key, value] of cellsToEvaluate) {
 
         let shouldLive = value.isAlive
 
-        if (key[0] !== 0 && key[0] !== ROW_SIZE - 1) {
-            const numLiveNeighbours = getNeighbours(value.neighbours, allCellData).filter((cell) => cell === 1).length
-            if (value.isAlive) {
-                if (!(numLiveNeighbours === 2 || numLiveNeighbours === 3)) {
-                    shouldLive = 0
-                }
-            } else {
-                if (numLiveNeighbours === 3) {
-                    shouldLive = 1
-                }
+        const numLiveNeighbours = getNeighbours(value.neighbours, allCellData).filter((cell) => cell === 1).length
+
+        if (value.isAlive) {
+            if (!(numLiveNeighbours === 2 || numLiveNeighbours === 3)) {
+                shouldLive = 0
+            }
+        } else {
+            if (numLiveNeighbours === 3) {
+                shouldLive = 1
             }
         }
 
