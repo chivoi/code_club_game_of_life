@@ -1,22 +1,8 @@
 import { useState, useEffect } from 'react';
+import { getNeighbours } from '../utils/helpers';
 
 const Cell = ({ position, grid, setGrid, isSimulating }) => {
-  const [alive, setAlive] = useState(0)
-
-  const getNeighbours = ([row, col], grid) => {
-    const top = [row - 1, col];
-    const right = [row, col + 1];
-    const bottom = [row + 1, col];
-    const left = [row, col - 1];
-    const topRight = [row - 1, col + 1];
-    const bottomRight = [row + 1, col + 1];
-    const bottomLeft = [row + 1, col - 1];
-    const topLeft = [row - 1, col - 1];
-
-    const neighbours = [top, right, bottom, left, topRight, bottomRight, bottomLeft, topLeft];
-
-    return neighbours.map(neighbour => grid[neighbour[0]][neighbour[1]])
-  }
+  const [alive, setAlive] = useState(0);
 
   const die = () => {
     setAlive(0);
@@ -36,17 +22,14 @@ const Cell = ({ position, grid, setGrid, isSimulating }) => {
 
   useEffect(() => {
     return () => {
-      if(isSimulating && position[0] !== 0 && position[0] !== grid.length - 1) {
-        console.log(position)
-        console.log(grid)
+      if (isSimulating && position[0] !== 0 && position[0] !== grid.length - 1) {
         const numLiveNeighbours = getNeighbours(position, grid).filter((cell) => cell === 1).length
-        console.log(numLiveNeighbours)
-        if(alive) {
-          if(!(numLiveNeighbours === 2 || numLiveNeighbours === 3)){
+        if (alive) {
+          if (!(numLiveNeighbours === 2 || numLiveNeighbours === 3)) {
             die()
           }
         } else {
-          if(numLiveNeighbours === 3) {
+          if (numLiveNeighbours === 3) {
             live()
           }
         }
@@ -62,8 +45,8 @@ const Cell = ({ position, grid, setGrid, isSimulating }) => {
 
   return <td
     onClick={() => {
-      if(!isSimulating) {
-        if(alive) {
+      if (!isSimulating) {
+        if (alive) {
           die()
         } else {
           live()
