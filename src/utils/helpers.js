@@ -14,9 +14,42 @@ export const resetGrid = () => {
             const bottomLeft = [row + 1, col - 1];
             const topLeft = [row - 1, col - 1];
 
+            let neighbours = [top, right, bottom, left, topRight, bottomRight, bottomLeft, topLeft]
+
+            let valuesToRemove = new Set()
+
+            if(row - 1 < 0) {
+                valuesToRemove.add(top)
+                valuesToRemove.add(topLeft)
+                valuesToRemove.add(topRight)
+            }
+
+            if(row + 1 >= ROW_SIZE) {
+                valuesToRemove.add(bottom)
+                valuesToRemove.add(bottomLeft)
+                valuesToRemove.add(bottomRight)
+            }
+
+            if(col - 1 < 0) {
+                valuesToRemove.add(left)
+                valuesToRemove.add(topLeft)
+                valuesToRemove.add(bottomLeft)
+            }
+
+            if(col + 1 >= COL_SIZE) {
+                valuesToRemove.add(right)
+                valuesToRemove.add(topRight)
+                valuesToRemove.add(bottomRight)
+            }
+
+            neighbours = neighbours.filter((i) => !Array.from(valuesToRemove).includes(i))
+
             newCellData[[row,col]] = {
-                neighbours: [top, right, bottom, left, topRight, bottomRight, bottomLeft, topLeft],
-                isAlive: 0
+                row: row,
+                col: col,
+                neighbours: neighbours,
+                isAlive: 0,
+                numLiveNeighbours: 0,
             }
         }
     }
@@ -49,7 +82,11 @@ export const randomize = (allCellData) => {
 }
 
 export const calculateNextState = (allCellData, setAllCellData) => {
-    for (const [key, value] of Object.entries(allCellData)) {
+    // Only compute for live cells
+    const liveCellCoords = Object.entries(allCellData).filter(([_key, val]) => val.isAlive);
+    const cellsToEvaluate = [...liveCellCoords.map(([_coord,cellData]) => [[[cellData.row, cellData.col],cellData],...cellData.neighbours.map((neighbourCoord) => [neighbourCoord, allCellData[neighbourCoord]])])].flat()
+
+    for (const [key, value] of cellsToEvaluate) {
 
         let shouldLive = value.isAlive
 
