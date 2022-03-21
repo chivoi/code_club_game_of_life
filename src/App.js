@@ -4,15 +4,17 @@ import './App.css';
 import Cell from './components/Cell'
 // helpers
 import { resetGrid, randomize, calculateNextState, ROW_SIZE, COL_SIZE } from './utils/helpers';
-// styled
-import { StyledBoard } from './components/styled/StyledBoard';
-import { MainContainer } from './components/styled/MainContainer';
-import { StyledHeader } from './components/styled/StyledHeader';
 // material UI
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
-// import SplitButton from './components/styled/SplitButton';
+import GitHubIcon from '@mui/icons-material/GitHub';
+// styled
+import { StyledBoard } from './components/styled/StyledBoard';
+import { MainContainer } from './components/styled/MainContainer';
+import { StyledHeader } from './components/styled/StyledHeader';
+import { StyledParagraph } from './components/styled/StyledParagraph';
+import { StyledFooter } from './components/styled/StyledFooter';
 
 
 
@@ -64,44 +66,47 @@ const App = () => {
 
 
   return (
-    <MainContainer className="App">
-      <StyledHeader>Conway's Гаме Of Лife</StyledHeader>
+    <div className="App">
+      <MainContainer>
+        <StyledHeader>Conway's Гаме Of Лife</StyledHeader>
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          '& > *': {
-            m: 2,
-          },
-        }}
-      >
-        <ButtonGroup variant="text" aria-label="text button group">
-          <Button color="secondary" style={{ textDecoration: 'overline' }} onClick={() => setSimulate(!simulate)}>{simulate ? "Stop" : "Simulate!"}</Button>
-          <Button color="secondary" onClick={() => setAllCellData(randomize(allCellData))}>Randomize!</Button>
-          <Button color="secondary" onClick={() => setAllCellData(resetGrid())}>Clear board</Button>
-          <Button color="secondary" onClick={() => saveSavedGame()}>Save as preset</Button>
-          <Button color="secondary" onClick={() => loadSavedGame()}>Load preset</Button>
-          {
-            savedGames && <select name="savedGames" onChange={(e) => loadSavedGame(e.target.value)}>
-              <option selected disabled hidden value=''></option>
-              {
-                savedGames.map((savedGame) => <option value={savedGame}>{savedGame}</option>)
-              }
-            </select>
-          }
-        </ButtonGroup>
-      </Box>
-      <StyledBoard>
-        <tbody>
-          {renderGrid()}
-        </tbody>
-      </StyledBoard>
-      <div>
-        Have been triggered {triggerCount} times
-      </div>
-    </MainContainer>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            '& > *': {
+              m: 2,
+            },
+          }}
+        >
+          <ButtonGroup variant="text" aria-label="text button group">
+            <Button color="secondary" style={{ textDecoration: 'overline' }} onClick={() => setSimulate(!simulate)}>{simulate ? "Stop" : "Simulate!"}</Button>
+            <Button color="secondary" onClick={() => setAllCellData(randomize(allCellData))}>Randomize!</Button>
+            <Button color="secondary" onClick={() => setAllCellData(resetGrid())}>Clear board</Button>
+            <Button color="secondary" onClick={() => saveSavedGame()}>Save as preset</Button>
+            <Button color="secondary" onClick={() => loadSavedGame()}>Load preset</Button>
+            {
+              savedGames && <select name="savedGames" onChange={(e) => loadSavedGame(e.target.value)}>
+                <option selected disabled hidden value=''></option>
+                {
+                  savedGames.map((savedGame) => <option value={savedGame}>{savedGame}</option>)
+                }
+              </select>
+            }
+          </ButtonGroup>
+        </Box>
+        <StyledParagraph>
+          Went through <span style={{ color: '#9036AA' }}>{triggerCount}</span> iterations
+        </StyledParagraph>
+        <StyledBoard>
+          <tbody>
+            {renderGrid()}
+          </tbody>
+        </StyledBoard>
+        <StyledFooter>Made by William Tio and Ana Lastoviria for Zendesk Code Club <GitHubIcon fontSize='small' /></StyledFooter>
+      </MainContainer>
+    </div>
   );
 }
 
