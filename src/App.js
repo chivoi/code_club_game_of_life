@@ -9,12 +9,18 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 // styled
 import { StyledBoard } from './components/styled/StyledBoard';
 import { MainContainer } from './components/styled/MainContainer';
 import { StyledHeader } from './components/styled/StyledHeader';
 import { StyledParagraph } from './components/styled/StyledParagraph';
 import { StyledFooter } from './components/styled/StyledFooter';
+import { StyledLink } from './components/styled/StyledLink';
+import { NativeSelect } from '@mui/material';
 
 
 
@@ -66,10 +72,10 @@ const App = () => {
 
 
   return (
-    <div className="App">
+    <div style={{ height: '100vh' }} className="App">
       <MainContainer>
-        <StyledHeader>Conway's Гаме Of Лife</StyledHeader>
-
+        {/* <StyledHeader>Conway's Гаме Of Лife</StyledHeader> */}
+        <StyledHeader>Conway's Game Of Life</StyledHeader>
         <Box
           sx={{
             display: 'flex',
@@ -81,14 +87,17 @@ const App = () => {
           }}
         >
           <ButtonGroup variant="text" aria-label="text button group">
-            <Button color="secondary" style={{ textDecoration: 'overline' }} onClick={() => setSimulate(!simulate)}>{simulate ? "Stop" : "Simulate!"}</Button>
-            <Button color="secondary" onClick={() => setAllCellData(randomize(allCellData))}>Randomize!</Button>
-            <Button color="secondary" onClick={() => setAllCellData(resetGrid())}>Clear board</Button>
-            <Button color="secondary" onClick={() => saveSavedGame()}>Save as preset</Button>
-            <Button color="secondary" onClick={() => loadSavedGame()}>Load preset</Button>
+            <Button color="secondary" style={{ textDecoration: 'overline', fontWeight: 'bold' }} onClick={() => setSimulate(!simulate)}>{simulate ? "Stop" : "Simulate"}</Button>
+            <Button color="secondary" onClick={() => setAllCellData(randomize(allCellData))}>Randomize</Button>
+            <Button color="secondary" onClick={() => {
+              setAllCellData(resetGrid());
+              setTriggerCount(0);
+            }}>Reset</Button>
+            <Button color="secondary" onClick={() => saveSavedGame()}>Save game</Button>
+            {/* <Button color="secondary" onClick={() => loadSavedGame()}>Load game</Button> */}
             {
-              savedGames && <select name="savedGames" onChange={(e) => loadSavedGame(e.target.value)}>
-                <option selected disabled hidden value=''></option>
+              savedGames && <select style={{ backgroundColor: 'transparent', border: 'medium none' }} name="savedGames" onChange={(e) => loadSavedGame(e.target.value)}>
+                <option selected disabled hidden value='' style={{ display: 'none' }}>Load Game</option>
                 {
                   savedGames.map((savedGame) => <option value={savedGame}>{savedGame}</option>)
                 }
@@ -104,9 +113,10 @@ const App = () => {
             {renderGrid()}
           </tbody>
         </StyledBoard>
-        <StyledFooter>Made by William Tio and Ana Lastoviria for Zendesk Code Club <GitHubIcon fontSize='small' /></StyledFooter>
+        <StyledFooter>
+          <span style={{ margin: '0 5px 0 0' }}>Made by William Tio and Ana Lastoviria for Zendesk Code Club</span><StyledLink href='https://github.com/william-tio/code_club_game_of_life' target={"_blank"}><GitHubIcon fontSize='small' /></StyledLink></StyledFooter>
       </MainContainer>
-    </div>
+    </div >
   );
 }
 

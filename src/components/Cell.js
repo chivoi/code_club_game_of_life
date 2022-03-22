@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { colors } from '../utils/helpers';
 import { StyledCell } from './styled/StyledCell';
 
 const Cell = ({ position, allCellData, setAllCellData, isSimulating }) => {
@@ -30,7 +31,7 @@ const Cell = ({ position, allCellData, setAllCellData, isSimulating }) => {
         }
       }
     }}
-    style={{ backgroundColor: alive ? 'black' : 'white' }}
+    style={{ backgroundColor: alive ? colors[Math.round(Math.random() * (colors.length + 1))] : 'white' }}
   />
 }
 

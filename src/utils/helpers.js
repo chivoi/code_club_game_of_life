@@ -110,3 +110,5 @@ export const calculateNextState = (allCellData, setAllCellData) => {
 
     setAllCellData(allCellData)
 }
+
+export const colors = ['#9036AA', '#36AA90', '#AA90FF', '#3655AA', '#36050C', '#975378', '#AA9036', '#e1b142', '#dd666c', '#111a67', '#86ded7', 'f8d46c', 'd72867']
