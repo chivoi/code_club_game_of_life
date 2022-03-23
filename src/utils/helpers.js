@@ -67,6 +67,16 @@ export const getNeighbours = (neighbours, allCellData) => {
     )
 }
 
+export const getNeighbourPositions = (neighbours, allCellData) => {
+    return neighbours.map(neighbour => {
+        if (allCellData[neighbour] !== undefined) {
+            return allCellData[neighbour]
+        }
+        return 0
+    }
+    )
+}
+
 
 export const randomize = (allCellData) => {
     let newCellData = {};
@@ -82,15 +92,25 @@ export const randomize = (allCellData) => {
 }
 
 export const calculateNextState = (allCellData, setAllCellData) => {
+    const oldAllCellData = allCellData;
     // Only compute for live cells
-    const liveCellCoords = Object.entries(allCellData).filter(([_key, val]) => val.isAlive);
-    const cellsToEvaluate = [...liveCellCoords.map(([coord, cellData]) => [[[cellData.row, cellData.col], cellData], ...cellData.neighbours.map((neighbourCoord) => [neighbourCoord, allCellData[neighbourCoord]])])].flat()
+    const liveCellCoords = Object.entries(oldAllCellData).filter(([_key, val]) => val.isAlive);
+    const cellsToEvaluate = [...liveCellCoords.map(([coord, cellData]) => [[[cellData.row, cellData.col], cellData], ...cellData.neighbours.map((neighbourCoord) => [neighbourCoord, oldAllCellData[neighbourCoord]])])].flat()
 
     for (const [key, value] of cellsToEvaluate) {
 
         let shouldLive = value.isAlive
 
-        const numLiveNeighbours = getNeighbours(value.neighbours, allCellData).filter((cell) => cell === 1).length
+        const numLiveNeighbours = getNeighbours(value.neighbours, oldAllCellData).filter((cell) => cell === 1).length
+        const numLiveNeighbours1 = getNeighbours(value.neighbours, oldAllCellData).filter((cell) => cell === 1)
+
+
+        if (key[0] === 11 && key[1] === 1) {
+            console.log(value);
+            console.log(numLiveNeighbours);
+            // console.log(numLiveNeighbours1);
+            console.log(getNeighbourPositions(value.neighbours, oldAllCellData).filter((cell) => cell.isAlive === 1));
+        }
 
         if (value.isAlive) {
             if (!(numLiveNeighbours === 2 || numLiveNeighbours === 3)) {
@@ -102,7 +122,7 @@ export const calculateNextState = (allCellData, setAllCellData) => {
             }
         }
 
-        allCellData[key] = {
+        oldAllCellData[key] = {
             ...value,
             isAlive: shouldLive
         }

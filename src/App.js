@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 // components
 import Cell from './components/Cell'
+import SavedGameDropdown from './components/SavedGameDropdown';
 // helpers
 import { resetGrid, randomize, calculateNextState, ROW_SIZE, COL_SIZE } from './utils/helpers';
 // material UI
@@ -28,8 +29,6 @@ const App = () => {
   const [simulate, setSimulate] = useState(false);
   const [triggerCount, setTriggerCount] = useState(0);
   const [allCellData, setAllCellData] = useState(resetGrid())
-  const [savedGames, setSavedGames] = useState();
-  const [savedGameToLoad, setSavedGameToLoad] = useState();
 
   const renderGrid = useCallback(() => {
     console.log("Rendering Grid")
@@ -41,35 +40,18 @@ const App = () => {
   }, [allCellData, simulate])
 
   useEffect(() => {
-    if (localStorage.getItem("savedGames") === null) {
-      localStorage.setItem("savedGames", JSON.stringify([]))
-      setSavedGames([])
-    } else {
-      setSavedGames(JSON.parse(localStorage.getItem("savedGames")))
-    }
-  }, [])
-
-
-  useEffect(() => {
     const interval = setInterval(() => {
       if (simulate) {
         calculateNextState(allCellData, setAllCellData)
         setTriggerCount(seconds => seconds + 1);
       }
-    }, 50);
+    }, 1000);
     return () => clearInterval(interval);
   }, [allCellData, simulate]);
 
-  const saveSavedGame = () => {
-    const key = `savedGame${localStorage.getItem("savedGames").length + 1}`
-    localStorage.setItem("savedGames", JSON.stringify([...JSON.parse(localStorage.getItem("savedGames")), key]))
-    localStorage.setItem(key, JSON.stringify(allCellData));
+  const clearBoard = () => {
+    setAllCellData(resetGrid())
   }
-
-  const loadSavedGame = (v) => {
-    setAllCellData(JSON.parse(localStorage.getItem(v)));
-  }
-
 
   return (
     <div style={{ height: '100vh' }} className="App">
@@ -93,16 +75,8 @@ const App = () => {
               setAllCellData(resetGrid());
               setTriggerCount(0);
             }}>Reset</Button>
-            <Button color="secondary" onClick={() => saveSavedGame()}>Save game</Button>
-            {/* <Button color="secondary" onClick={() => loadSavedGame()}>Load game</Button> */}
-            {
-              savedGames && <select style={{ backgroundColor: 'transparent', border: 'medium none' }} name="savedGames" onChange={(e) => loadSavedGame(e.target.value)}>
-                <option selected disabled hidden value='' style={{ display: 'none' }}>Load Game</option>
-                {
-                  savedGames.map((savedGame) => <option value={savedGame}>{savedGame}</option>)
-                }
-              </select>
-            }
+            <SavedGameDropdown setAllCellData={setAllCellData} resetGrid={resetGrid} allCellData={allCellData} />
+
           </ButtonGroup>
         </Box>
         <StyledParagraph>
