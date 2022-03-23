@@ -1,5 +1,5 @@
-export const ROW_SIZE = 40
-export const COL_SIZE = 100
+export const ROW_SIZE = 20
+export const COL_SIZE = 60
 export const resetGrid = () => {
     let newCellData = {};
 
