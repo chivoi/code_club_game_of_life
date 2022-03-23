@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { colors } from '../utils/helpers';
+import { StyledCell } from './styled/StyledCell';
 
 const Cell = ({ position, allCellData, setAllCellData, isSimulating }) => {
   const [alive, setAlive] = useState(0);
@@ -19,7 +21,7 @@ const Cell = ({ position, allCellData, setAllCellData, isSimulating }) => {
     setAlive(allCellData[position].isAlive)
   }, [allCellData, position])
 
-  return <td
+  return <StyledCell
     onClick={() => {
       if (!isSimulating) {
         if (alive) {
@@ -29,7 +31,7 @@ const Cell = ({ position, allCellData, setAllCellData, isSimulating }) => {
         }
       }
     }}
-    style={{ border: '1px solid black', width: '25px', height: '25px', backgroundColor: alive ? 'black' : 'white' }}
+    style={{ backgroundColor: alive ? colors[Math.round(Math.random() * (colors.length + 1))] : 'white' }}
   />
 }
 
